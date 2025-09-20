@@ -74,6 +74,7 @@ return {
         'echasnovski/mini.pick',
 		'folke/snacks.nvim',
     },
+    lazy = true,
   },
   {
       "nvim-tree/nvim-tree.lua",
