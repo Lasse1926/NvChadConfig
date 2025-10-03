@@ -1,4 +1,14 @@
 return {
+  { 'nvim-mini/mini.nvim', version = '*' },
+  {
+      'MeanderingProgrammer/render-markdown.nvim',
+      dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' }, -- if you use the mini.nvim suite
+      -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' }, -- if you use standalone mini plugins
+      -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+      ---@module 'render-markdown'
+      ---@type render.md.UserConfig
+      opts = {},
+  },
   {
     -- The plugin location on GitHub
     "vimwiki/vimwiki",
@@ -23,17 +33,15 @@ return {
     version = '^6', -- Recommended
     lazy = false, -- This plugin is already lazy
   },
-  {
-    'mfussenegger/nvim-dap',
-    lazy = false;
-  },
-  {
-    "stevearc/conform.nvim",
-    -- event = 'BufWritePre', -- uncomment for format on save
-    opts = require "configs.conform",
-  },
-
-  -- These are some examples, uncomment them if you want to see them work!
+  -- {
+  --   'mfussenegger/nvim-dap',
+  --   lazy = true;
+  -- },
+  -- {
+  --   "stevearc/conform.nvim",
+  --   -- event = 'BufWritePre', -- uncomment for format on save
+  --   opts = require "configs.conform",
+  -- },
   {
     "neovim/nvim-lspconfig",
     config = function()
@@ -97,7 +105,7 @@ return {
   		ensure_installed = {
   			"vim", "lua", "vimdoc",
        "html", "css","javascript",
-        "typescript","tsx","go","rust"
+        "typescript","tsx","go"
   		},
   	},
   },

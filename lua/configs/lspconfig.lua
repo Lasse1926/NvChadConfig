@@ -5,7 +5,6 @@ local base = require("nvchad.configs.lspconfig")
 local on_attach = base.on_attach
 local capabilities = base.capabilities
 
-capabilities.textDocument.completion.completionItem.snippetSupport = false
 vim.lsp.config("clangd",{
   on_attach = function(client,bufnr)
     client.server_capabilities.signatureHelpProvider = false
@@ -18,19 +17,14 @@ vim.lsp.config("ts_ls",{
   capabilities = capabilities,
 })
 
--- vim.lsp.config("rust-analyzer",{
---   completion = {
---         callable = {
---           snippets = "add_parentheses", -- Instead of the default "fill_arguments"
---         },
---       },
--- })
-
 vim.lsp.config("eslint",{
   on_attach = on_attach,
   capabilities = capabilities,
 })
 
+vim.lsp.config("rust_analyzer",{
+  cmd = { "rustup", "run", "nightly", "rust-analyzer" },
+})
 
 local servers = { "html", "cssls" }
 vim.lsp.enable(servers)

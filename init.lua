@@ -31,7 +31,11 @@ dofile(vim.g.base46_cache .. "statusline")
 
 require "options"
 require "autocmds"
-
+require('mini.icons').setup()
+require('render-markdown').setup({
+    file_types = { 'markdown', 'vimwiki' },
+})
+vim.treesitter.language.register('markdown', 'vimwiki')
 vim.schedule(function()
   require "mappings"
 end)
