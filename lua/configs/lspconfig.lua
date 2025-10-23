@@ -25,6 +25,13 @@ vim.lsp.config("eslint",{
 vim.lsp.config("rust_analyzer",{
   cmd = { "rustup", "run", "nightly", "rust-analyzer" },
 })
+vim.lsp.config("phpactor",{
+    on_attach = on_attach,
+    init_options = {
+        ["language_server_phpstan.enabled"] = false,
+        ["language_server_psalm.enabled"] = false,
+    }
+})
 
 local servers = { "html", "cssls" }
 vim.lsp.enable(servers)
