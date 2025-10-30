@@ -17,5 +17,5 @@ map("n", "gd", vim.lsp.buf.definition, opts)
 map("n", "<leader>ca", vim.lsp.buf.code_action, opts)
 
 -- Open code actions for the selected visual range
-map("x", "<leader>ca", vim.lsp.buf.range_code_action, opts)
+map("x", "<leader>ca", vim.lsp.buf.code_action, opts)
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
