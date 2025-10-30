@@ -10,6 +10,15 @@ return {
       opts = {},
   },
   {
+      'nvim-flutter/flutter-tools.nvim',
+      lazy = false,
+      dependencies = {
+          'nvim-lua/plenary.nvim',
+          'stevearc/dressing.nvim', -- optional for vim.ui.select
+      },
+      config = true,
+  },
+  {
     -- The plugin location on GitHub
     "vimwiki/vimwiki",
     -- The event that triggers the plugin
