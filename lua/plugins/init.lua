@@ -1,4 +1,7 @@
 return {
+  {'dhruvasagar/vim-table-mode',
+    lazy = false,
+  },
   { 'nvim-mini/mini.nvim', version = '*' },
   {
       'MeanderingProgrammer/render-markdown.nvim',
