@@ -1,4 +1,7 @@
 return {
+  {'prettier/vim-prettier',
+    lazy = false,
+  },
   {'dhruvasagar/vim-table-mode',
     lazy = false,
   },
