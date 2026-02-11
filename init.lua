@@ -39,4 +39,5 @@ vim.treesitter.language.register('markdown', 'vimwiki')
 vim.schedule(function()
   require "mappings"
 end)
+vim.o.grepprg = "rg --vimgrep --smart-case"
 
