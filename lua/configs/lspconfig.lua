@@ -19,6 +19,11 @@ vim.lsp.config("ts_ls",{
   capabilities = capabilities,
 })
 
+vim.lsp.config("pyright", {
+  on_attach = on_attach,
+  capabilities = capabilities,
+})
+
 vim.lsp.config("eslint",{
   on_attach = on_attach,
   capabilities = capabilities,
@@ -35,7 +40,7 @@ vim.lsp.config("phpactor",{
     }
 })
 
-local servers = { "html", "cssls" }
+local servers = { "html", "cssls", "pyright" }
 vim.lsp.enable(servers)
 
 -- read :h vim.lsp.config for changing options of lsp servers 
