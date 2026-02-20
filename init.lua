@@ -41,3 +41,5 @@ vim.schedule(function()
 end)
 vim.o.grepprg = "rg --vimgrep --smart-case"
 
+vim.opt.title = true
+vim.opt.titlestring = "nvim - %{fnamemodify(getcwd(), ':~')}"

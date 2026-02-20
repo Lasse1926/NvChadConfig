@@ -19,3 +19,5 @@ map("n", "<leader>ca", vim.lsp.buf.code_action, opts)
 -- Open code actions for the selected visual range
 map("x", "<leader>ca", vim.lsp.buf.code_action, opts)
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
+local nvtree = require("configs.nvimtree")
+map("n", "<leader>ie", nvtree.open_in_explorer, { desc = "Open folder in Explorer", noremap = true, silent = true })
