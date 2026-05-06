@@ -6,6 +6,13 @@ return {
       vim.lsp.enable('jdtls')
     end,
   },
+  {
+    "aspeddro/pandoc.nvim",
+    config = function()
+      require("configs.pandoc")
+    end,
+    lazy = false,
+  },
   {'prettier/vim-prettier',
     lazy = false,
   },
