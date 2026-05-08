@@ -1,12 +1,19 @@
 local M = {}
 
+local function css_arg_if_exists(css_path)
+  if vim.loop.fs_stat(css_path) then
+    return { "--css", css_path }
+  end
+  return {}
+end
+
 function M.setup()
   require("pandoc").setup({
     default = {
       output = "%s.html",
       args = {
-        {"--standalone"},
-        {"--toc"},
+        { "--standalone" },
+        { "--toc" },
       },
     },
   })
@@ -17,14 +24,17 @@ function M.setup()
     local dir = vim.fn.expand("%:p:h")
     local css = dir .. "/style.css"
 
-    vim.fn.jobstart({
+    local cmd = {
       "pandoc",
       file,
       "--defaults=vimhtml.yaml",
-      "--css", css,
       "--output", file:gsub("%.md$", ".html"),
       "-s",
-    }, { detach = true })
+    }
+
+    vim.list_extend(cmd, css_arg_if_exists(css))
+
+    vim.fn.jobstart(cmd, { detach = true })
   end, { desc = "Pandoc → HTML (vimhtml.yaml)" })
 
   -- Slides build (slides.yaml + revealjs)
@@ -34,15 +44,18 @@ function M.setup()
     local dir = vim.fn.expand("%:p:h")
     local css = dir .. "/style.css"
 
-    vim.fn.jobstart({
+    local cmd = {
       "pandoc",
       file,
       "--defaults=slides.yaml",
       "-t", "revealjs",
-      "--css", css,
       "--output", out,
       "-s",
-    }, { detach = true })
+    }
+
+    vim.list_extend(cmd, css_arg_if_exists(css))
+
+    vim.fn.jobstart(cmd, { detach = true })
   end, { desc = "Pandoc → Slides (revealjs)" })
 end
 
