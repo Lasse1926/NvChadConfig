@@ -40,6 +40,14 @@ vim.lsp.config("phpactor",{
     }
 })
 
+vim.lsp.config("gdscript", {
+  cmd = { "ncat", "127.0.0.1", "6005" },
+  filetypes = { "gd", "gdscript", "gdshader" },
+  root_markers = { "project.godot", ".git" },
+})
+
+vim.lsp.enable("gdscript")
+
 local servers = { "html", "cssls", "pyright" }
 vim.lsp.enable(servers)
 
