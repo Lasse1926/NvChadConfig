@@ -1,5 +1,23 @@
 return {
   {
+    "Lasse1926/nvim-flashcard-windows",
+    cmd = "Flashcard",
+    opts = {
+      decks_dir = vim.fn.stdpath("data") .. "/flashcard/decks",
+      new_cards_per_day = 20,
+      picker = nil, -- nil=auto | "snacks" | "telescope" | "select" | function
+      keymaps = {
+        reveal = "<Space>",
+        again  = "1",
+        hard   = "2",
+        good   = "3",
+        easy   = "4",
+        quit   = "q",
+      },
+      window = { width = 0.5, height = 0.4, border = "rounded" },
+    },
+  },
+  {
     'nvim-java/nvim-java',
     config = function()
       require('java').setup()
