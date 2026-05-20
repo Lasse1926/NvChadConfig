@@ -22,8 +22,22 @@ map("x", "<leader>ca", vim.lsp.buf.code_action, opts)
 local nvtree = require("configs.nvimtree")
 
 map("n", "<leader>ie", nvtree.open_in_explorer, { desc = "Open folder in Explorer", noremap = true, silent = true })
-map("n", "<leader>yp", function()
+map("n", "<leader>yp",
+function()
   local path = vim.fn.expand("%:.")
   vim.fn.setreg("+", path)
   print("Copied: " .. path)
-end, { desc = "Yank file path (relative to cwd)", noremap = true, silent = true })
+end,
+{ desc = "Yank file path (relative to cwd)", noremap = true, silent = true })
+
+map("n","<leader>le",
+function()
+  vim.opt_local.spell = not vim.opt_local.spell:get()
+  vim.opt_local.spelllang = "en_us"
+end,{ desc = "toggel english spellcheck" })
+
+map("n","<leader>lg",
+function()
+  vim.opt_local.spell = not vim.opt_local.spell:get()
+  vim.opt_local.spelllang = "de_20"
+end,{ desc = "enable german spellcheck" })
