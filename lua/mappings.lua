@@ -41,3 +41,8 @@ function()
   vim.opt_local.spell = not vim.opt_local.spell:get()
   vim.opt_local.spelllang = "de_20"
 end,{ desc = "enable german spellcheck" })
+
+map("v", "<leader>lg", function()
+  vim.cmd('normal! "zy')
+  vim.cmd("grep! " .. vim.fn.escape(vim.fn.getreg("z"), [[\ /]]))
+end, { desc = "grep selected text" })
