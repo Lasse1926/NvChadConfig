@@ -86,10 +86,23 @@ return {
     version = '^6', -- Recommended
     lazy = false, -- This plugin is already lazy
   },
-  -- {
-  --   'mfussenegger/nvim-dap',
-  --   lazy = true;
-  -- },
+  {
+    'mfussenegger/nvim-dap',
+    lazy = false;
+  },
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = {
+      "mfussenegger/nvim-dap",
+      "nvim-neotest/nvim-nio",
+    },
+
+    config = function()
+      require("configs.dap")
+    end,
+
+    lazy = false;
+  },
   -- {
   --   "stevearc/conform.nvim",
   --   -- event = 'BufWritePre', -- uncomment for format on save

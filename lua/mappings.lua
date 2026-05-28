@@ -46,3 +46,36 @@ map("v", "<leader>lg", function()
   vim.cmd('normal! "zy')
   vim.cmd("grep! " .. vim.fn.escape(vim.fn.getreg("z"), [[\ /]]))
 end, { desc = "grep selected text" })
+
+local dap = require("dap")
+local dapui = require("dapui")
+
+-- Core controls
+vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "Continue" })
+vim.keymap.set("n", "<leader>do", dap.step_over, { desc = "Step Over" })
+vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "Step Into" })
+vim.keymap.set("n", "<leader>dO", dap.step_out, { desc = "Step Out" })
+
+-- Breakpoints
+vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Toggle Breakpoint" })
+vim.keymap.set("n", "<leader>dB", function()
+  dap.set_breakpoint(vim.fn.input("Condition: "))
+end, { desc = "Conditional Breakpoint" })
+
+-- UI
+vim.keymap.set("n", "<leader>du", dapui.toggle, { desc = "Toggle UI" })
+vim.keymap.set("n", "<leader>de", dapui.eval, { desc = "Evaluate Expression" })
+vim.keymap.set("n", "<leader>dr", dap.repl.open, { desc = "Open REPL" })
+
+-- Session control
+vim.keymap.set("n", "<leader>dt", function()
+  dap.terminate()
+  dapui.close()
+end, { desc = "Terminate" })
+
+-- Utilities
+vim.keymap.set("n", "<leader>dl", dap.run_last, { desc = "Run Last" })
+
+vim.keymap.set({ "n", "v" }, "<leader>dh", function()
+  require("dap.ui.widgets").hover()
+end, { desc = "Hover Variables" })
