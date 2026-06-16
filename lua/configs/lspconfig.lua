@@ -1,6 +1,7 @@
 require("nvchad.configs.lspconfig").defaults()
 local base = require("nvchad.configs.lspconfig")
 
+local userprofile = vim.env.USERPROFILE
 
 local on_attach = base.on_attach
 local capabilities = base.capabilities
@@ -49,10 +50,12 @@ vim.lsp.config("gdscript", {
 vim.lsp.enable("gdscript")
 
 vim.lsp.config("ols", {
-  cmd = { "C:/Users/mokel/.lsp/ols/ols-x86_64-pc-windows-msvc.exe" },
+  cmd = {
+    userprofile .. "/.lsp/ols/ols-x86_64-pc-windows-msvc.exe",
+  },
   mason = false,
   settings = {
-    odin_command = "C:/Users/mokel/.odin/odin.exe",
+    odin_command = userprofile .. "/.odin/odin.exe",
   },
 })
 
