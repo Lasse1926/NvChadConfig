@@ -48,7 +48,15 @@ vim.lsp.config("gdscript", {
 
 vim.lsp.enable("gdscript")
 
-local servers = { "html", "cssls", "pyright" }
+vim.lsp.config("ols", {
+  cmd = { "C:/Users/mokel/.lsp/ols/ols-x86_64-pc-windows-msvc.exe" },
+  mason = false,
+  settings = {
+    odin_command = "C:/Users/mokel/.odin/odin.exe",
+  },
+})
+
+local servers = { "html", "cssls", "pyright","ols" }
 vim.lsp.enable(servers)
 
 -- read :h vim.lsp.config for changing options of lsp servers 
