@@ -65,6 +65,8 @@ return {
       "<leader>wt",
     },
     cmd = { "VimWikiIndex", "VimWikiMakeDiaryNote" },
+    event = "BufReadPre",
+    ft = { "vimwiki" },
 
     init = function()
       vim.g.vimwiki_list = {
@@ -74,6 +76,7 @@ return {
           ext = "md",
         },
       }
+      pcall(require, "configs.local")
     end,
 
     config = function()
