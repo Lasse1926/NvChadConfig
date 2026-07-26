@@ -43,3 +43,4 @@ vim.o.grepprg = "rg --vimgrep --smart-case"
 
 vim.opt.title = true
 vim.opt.titlestring = "nvim - %{fnamemodify(getcwd(), ':~')}"
+vim.g.lua_snippets_path = vim.fn.stdpath "config" .. "/lua/lua_snippets"
