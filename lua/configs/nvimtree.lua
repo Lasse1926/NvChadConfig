@@ -17,6 +17,6 @@ function M.open_in_explorer()
 end
 
 -- Mapping
-vim.keymap.set("n", "<leader>ie", M.open_in_explorer, { desc = "Open folder in Explorer", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>ie", M.open_in_explorer, { desc = "File | Open in Explorer", noremap = true, silent = true })
 
 return M

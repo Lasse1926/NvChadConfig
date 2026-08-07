@@ -35,7 +35,7 @@ function M.setup()
     vim.list_extend(cmd, css_arg_if_exists(css))
 
     vim.fn.jobstart(cmd, { detach = true })
-  end, { desc = "Pandoc → HTML (vimhtml.yaml)" })
+  end, { desc = "Pandoc | Export HTML" })
 
   -- Slides build (slides.yaml + revealjs)
   vim.keymap.set("n", "<leader>ps", function()
@@ -56,7 +56,7 @@ function M.setup()
     vim.list_extend(cmd, css_arg_if_exists(css))
 
     vim.fn.jobstart(cmd, { detach = true })
-  end, { desc = "Pandoc → Slides (revealjs)" })
+  end, { desc = "Pandoc | Export Slides" })
 end
 
 M.setup()

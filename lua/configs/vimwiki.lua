@@ -39,8 +39,8 @@ function M.open_project()
 end
 
 function M.setup()
-  vim.keymap.set("n", "<leader>ww", M.open_wiki, { desc = "Wiki workspace" })
-  vim.keymap.set("n", "<leader>wt", M.open_project, { desc = "Project workspace" })
+  vim.keymap.set("n", "<leader>ww", M.open_wiki, { desc = "Wiki | Open workspace" })
+  vim.keymap.set("n", "<leader>wt", M.open_project, { desc = "Wiki | Open project" })
 
   local last_state = nil
 
