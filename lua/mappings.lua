@@ -77,3 +77,9 @@ map("n", "<leader>dl", dap.run_last, { desc = "Dap | Run Last" })
 map({ "n", "v" }, "<leader>dh", function()
   require("dap.ui.widgets").hover()
 end, { desc = "Dap | Hover Variables" })
+
+vim.api.nvim_create_user_command("PyRepl", function()
+  require("configs.pyrepl").toggle()
+end, { desc = "Python | Toggle REPL" })
+
+map({ "n", "t" }, "<A-p>", "<cmd>PyRepl<CR>", { desc = "Python | Toggle REPL" })
