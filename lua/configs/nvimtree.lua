@@ -1,11 +1,10 @@
 local M = {}
-local ok, api = pcall(require, "nvim-tree.api")
-if not ok then return M end
 
 function M.open_in_explorer()
-  local node = nil -- nil = automatically use node under cursor
   if vim.bo.filetype == "NvimTree" then
-    api.node.run.system(node)
+    local ok, api = pcall(require, "nvim-tree.api")
+    if not ok then return end
+    api.node.run.system(nil) -- nil = use node under cursor
   else
     -- fallback for normal buffers
     local path = vim.fn.expand("%:p")

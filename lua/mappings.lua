@@ -20,6 +20,9 @@ map("n", "<leader>ca", vim.lsp.buf.code_action, vim.tbl_extend("force", opts, { 
 map("x", "<leader>ca", vim.lsp.buf.code_action, vim.tbl_extend("force", opts, { desc = "Lsp | Code Action" }))
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
 
+-- Registers <leader>ie (open file/folder in system default / Explorer)
+require "configs.nvimtree"
+
 map("n", "<leader>yp",
 function()
   local path = vim.fn.expand("%:.")
