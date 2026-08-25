@@ -86,3 +86,12 @@ vim.api.nvim_create_user_command("PyRepl", function()
 end, { desc = "Python | Toggle REPL" })
 
 map({ "n", "t" }, "<A-p>", "<cmd>PyRepl<CR>", { desc = "Python | Toggle REPL" })
+
+-- Gitsigns
+map({"n"},"<leader>gd",function ()
+  require('gitsigns').diffthis()
+end,{ desc = "Git | Diffthis" })
+
+map({"n"},"<leader>gh",function ()
+  require('gitsigns').preview_hunk_inline()
+end,{ desc = "Git | preview hunk inline" })

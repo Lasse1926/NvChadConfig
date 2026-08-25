@@ -31,6 +31,21 @@ return {
     end,
     lazy = false,
   },
+  {'sindrets/diffview.nvim',
+    lazy = false,
+  },
+  {
+    "NeogitOrg/neogit",
+    lazy = true,
+    dependencies = {
+      "sindrets/diffview.nvim",
+      "nvim-telescope/telescope.nvim",
+    },
+    cmd = "Neogit",
+    keys = {
+      { "<leader>gg", "<cmd>Neogit<cr>", desc = "Show Neogit UI" }
+    }
+  },
   {'prettier/vim-prettier',
     lazy = false,
   },
@@ -47,15 +62,6 @@ return {
     config = function()
       require('configs.render_markdown')
     end,
-  },
-  {
-      'nvim-flutter/flutter-tools.nvim',
-      lazy = false,
-      dependencies = {
-          'nvim-lua/plenary.nvim',
-          'stevearc/dressing.nvim', -- optional for vim.ui.select
-      },
-      config = true,
   },
   {
     "vimwiki/vimwiki",

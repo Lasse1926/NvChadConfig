@@ -16,7 +16,15 @@ M.base46 = {
 M.ui = {
   tabufline = {
     enabled= false
-  }
+  },
+  statusline = {
+    theme = "default",
+    separator_style = "block",
+    order = { "mode", "f", "git", "%=", "lsp_msg", "%=", "lsp", "cwd"},
+    modules = {
+      f = "%F"
+    }
+  },
 }
 
 -- M.nvdash = { load_on_startup = true }
