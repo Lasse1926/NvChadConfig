@@ -25,6 +25,16 @@ map("n", "<leader>gt", "<cmd>FzfLua git_status<CR>", { desc = "Git | Status" })
 map("n", "<leader>pt", function()
   require("configs.fzfterms").pick()
 end, { desc = "Find | Hidden terminals" })
+
+-- LSP pickers. Lowercase = current buffer, uppercase = whole project.
+map("n", "<leader>fs", "<cmd>FzfLua lsp_document_symbols<CR>", { desc = "Lsp | Symbols in file" })
+map("n", "<leader>fS", "<cmd>FzfLua lsp_live_workspace_symbols<CR>", { desc = "Lsp | Symbols in project" })
+map("n", "<leader>fr", "<cmd>FzfLua lsp_references<CR>", { desc = "Lsp | References" })
+map("n", "<leader>fR", "<cmd>FzfLua lsp_finder<CR>", { desc = "Lsp | Finder (refs/defs/impls)" })
+map("n", "<leader>fe", "<cmd>FzfLua lsp_document_diagnostics<CR>", { desc = "Lsp | Diagnostics in file" })
+map("n", "<leader>fE", "<cmd>FzfLua lsp_workspace_diagnostics<CR>", { desc = "Lsp | Diagnostics in project" })
+-- Parser-based, so this one still works with no language server attached.
+map("n", "<leader>ft", "<cmd>FzfLua treesitter<CR>", { desc = "Find | Treesitter symbols" })
 -- Deliberately not overridden:
 --   <leader>fm -> conform format file (never was telescope)
 --   <leader>th -> require("nvchad.themes").open() (volt picker, not telescope)
