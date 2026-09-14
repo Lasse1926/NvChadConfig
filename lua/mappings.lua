@@ -121,3 +121,10 @@ end,{ desc = "Git | Diffthis" })
 map({"n"},"<leader>gh",function ()
   require('gitsigns').preview_hunk_inline()
 end,{ desc = "Git | preview hunk inline" })
+
+-- Diff
+vim.api.nvim_create_user_command("DiffPick", function()
+  require("configs.filediff").pick_and_diff()
+end, { desc = "File | Diff against picked file" })
+
+map("n", "<leader>fd", "<cmd>DiffPick<CR>", { desc = "File | Diff against picked file" })
