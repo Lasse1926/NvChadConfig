@@ -3,6 +3,32 @@ require "nvchad.mappings"
 
 local map = vim.keymap.set
 
+-- Fzf-lua: overrides the telescope maps set by `require "nvchad.mappings"`.
+-- Kept up here rather than at the bottom on purpose -- the top-level
+-- require("dap") further down would abort this file if dap ever failed to load,
+-- and that would leave NvChad's <cmd>Telescope ...<CR> maps dangling with E492.
+map("n", "<leader>ff", "<cmd>FzfLua files<CR>", { desc = "Find | Files" })
+map(
+  "n",
+  "<leader>fa",
+  "<cmd>FzfLua files follow=true no_ignore=true hidden=true<CR>",
+  { desc = "Find | All files" }
+)
+map("n", "<leader>fw", "<cmd>FzfLua live_grep<CR>", { desc = "Find | Live grep" })
+map("n", "<leader>fb", "<cmd>FzfLua buffers<CR>", { desc = "Find | Buffers" })
+map("n", "<leader>fh", "<cmd>FzfLua helptags<CR>", { desc = "Find | Help tags" })
+map("n", "<leader>fo", "<cmd>FzfLua oldfiles<CR>", { desc = "Find | Old files" })
+map("n", "<leader>fz", "<cmd>FzfLua blines<CR>", { desc = "Find | Lines in buffer" })
+map("n", "<leader>ma", "<cmd>FzfLua marks<CR>", { desc = "Find | Marks" })
+map("n", "<leader>cm", "<cmd>FzfLua git_commits<CR>", { desc = "Git | Commits" })
+map("n", "<leader>gt", "<cmd>FzfLua git_status<CR>", { desc = "Git | Status" })
+map("n", "<leader>pt", function()
+  require("configs.fzfterms").pick()
+end, { desc = "Find | Hidden terminals" })
+-- Deliberately not overridden:
+--   <leader>fm -> conform format file (never was telescope)
+--   <leader>th -> require("nvchad.themes").open() (volt picker, not telescope)
+
 map("n", ";", ":", { desc = "Cmd | Enter command mode" })
 map("i", "jk", "<ESC>", { desc = "Insert | Exit insert mode" })
 
