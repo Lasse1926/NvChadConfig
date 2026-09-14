@@ -59,7 +59,9 @@ local options = {
     -- Roles telescope has no counterpart for: plain syntax groups, which base46
     -- themes via the "defaults"/"syntax" caches already loaded at startup.
     header_bind = "Function",
-    header_text = "Comment",
+    -- Normal, not Comment: Comment is #6770aa against a #131421 background,
+    -- which is too dim to read for the keybind hint line.
+    header_text = "Normal",
     path_colnr = "Number",
     path_linenr = "Number",
     buf_name = "Directory",
@@ -71,7 +73,9 @@ local options = {
     tab_title = "Title",
     tab_marker = "Special",
     dir_icon = "Directory",
-    dir_part = "Comment",
+    -- Directory (4.99:1) rather than Comment (3.89:1): still reads as secondary
+    -- to the filename, but stays above the 4.5:1 legibility threshold.
+    dir_part = "Directory",
     file_part = "Normal",
     live_prompt = "Special",
   },
@@ -81,7 +85,10 @@ local options = {
   -- TelescopeSelectionCaret, TelescopeTitle); fzf-lua would silently drop those
   -- flags, so repoint them at groups that do exist rather than inventing new ones.
   fzf_colors = {
-    ["fg"] = { "fg", "TelescopeNormal" },
+    -- Normal, not TelescopeNormal: base46 only sets `bg` on TelescopeNormal, so
+    -- asking for its fg yields nil and every un-ANSI'd character (brackets, the
+    -- buffer flag columns) falls back to the terminal default instead of the theme.
+    ["fg"] = { "fg", "Normal" },
     ["bg"] = { "bg", "TelescopeNormal" },
     ["hl"] = { "fg", "TelescopeMatching" },
     ["fg+"] = { "fg", "TelescopeSelection" },
@@ -93,7 +100,9 @@ local options = {
     ["prompt"] = { "fg", "TelescopePromptPrefix" },
     ["pointer"] = { "fg", "TelescopePromptPrefix" },
     ["marker"] = { "fg", "TelescopePromptPrefix" },
-    ["header"] = { "fg", "TelescopePreviewTitle" },
+    -- TelescopePreviewTitle is a badge (dark fg on a bright green bg); taking
+    -- only its fg puts #171928 on a #131421 background, i.e. black on black.
+    ["header"] = { "fg", "Normal" },
     ["info"] = { "fg", "Comment" },
   },
 
