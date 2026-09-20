@@ -138,3 +138,5 @@ vim.api.nvim_create_user_command("DiffPick", function()
 end, { desc = "File | Diff against picked file" })
 
 map("n", "<leader>fd", "<cmd>DiffPick<CR>", { desc = "File | Diff against picked file" })
+
+map("n", "<C-c>", "<Nop>", { desc = "Disable Ctrl-C" })
