@@ -59,7 +59,7 @@ map("x", "<leader>ca", vim.lsp.buf.code_action, vim.tbl_extend("force", opts, { 
 -- Registers <leader>ie (open file/folder in system default / Explorer)
 require "configs.nvimtree"
 
-map("n", "<leader>yp",
+map("n", "<leader>yr",
 function()
   local path = vim.fn.expand("%:.")
   vim.fn.setreg("+", path)
@@ -67,6 +67,14 @@ function()
 end,
 { desc = "File | Copy relative path", noremap = true, silent = true })
 
+map("n", "<leader>yp",
+function()
+  local path = vim.fn.expand("%:p")
+  vim.fn.setreg("+", path)
+  print("Copied: " .. path)
+end,
+
+{ desc = "File | Copy absolute path", noremap = true, silent = true })
 map("n","<leader>le",
 function()
   vim.opt_local.spell = not vim.opt_local.spell:get()
