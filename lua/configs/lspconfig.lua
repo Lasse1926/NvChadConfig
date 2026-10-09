@@ -12,7 +12,7 @@ vim.lsp.config("clangd",{
     on_attach(client,bufnr)
   end,
   capabilities = capabilities,
-  cmd = { "clangd", "--compile-commands-dir=build" }, --Tells clangd to read build/compile_commands.json for proper header and flag info
+  cmd = { "clangd"}, --Tells clangd to read build/compile_commands.json for proper header and flag info , "--compile-commands-dir=build" 
 })
 
 vim.lsp.config("ts_ls",{
