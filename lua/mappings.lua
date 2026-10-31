@@ -148,3 +148,9 @@ end, { desc = "File | Diff against picked file" })
 map("n", "<leader>fd", "<cmd>DiffPick<CR>", { desc = "File | Diff against picked file" })
 
 map("n", "<C-c>", "<Nop>", { desc = "Disable Ctrl-C" })
+
+-- Orgmode
+map("n", "<leader>ow", "<cmd>e ~/orgfiles/work.org<CR>", { desc = "Org | Open work.org" })
+map("n", "<leader>op", "<cmd>e ~/orgfiles/personal.org<CR>", { desc = "Org | Open personal.org" })
+map("n", "<leader>oR", "<cmd>e ~/orgfiles/refile.org<CR>", { desc = "Org | Open refile.org (inbox)" })
+map("n", "<leader>os", "<cmd>e ~/orgfiles/schedule.org<CR>", { desc = "Org | Open schedule.org" })

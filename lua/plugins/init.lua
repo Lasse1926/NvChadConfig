@@ -94,6 +94,24 @@ return {
     end,
   },
   {
+  'nvim-orgmode/orgmode',
+  event = 'VeryLazy',
+  config = function()
+    require('orgmode').setup({
+      org_agenda_files = '~/orgfiles/**/*',
+      org_default_notes_file = '~/orgfiles/refile.org',
+      org_capture_templates = {
+        a = {
+          description = 'Appointment',
+          template = '* %?\n  %^T',
+          target = '~/orgfiles/schedule.org',
+        },
+      },
+    })
+   vim.lsp.enable('org')
+  end,
+  },
+  {
     'mrcjkb/rustaceanvim',
     version = '^6', -- Recommended
     lazy = false, -- This plugin is already lazy
