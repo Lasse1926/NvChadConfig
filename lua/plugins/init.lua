@@ -39,9 +39,12 @@ return {
     lazy = true,
     dependencies = {
       "sindrets/diffview.nvim",
-      "nvim-telescope/telescope.nvim",
+      "ibhagwan/fzf-lua",
     },
     cmd = "Neogit",
+    opts = {
+      integrations = { diffview = true, telescope = false, fzf_lua = true },
+    },
     keys = {
       { "<leader>gg", "<cmd>Neogit<cr>", desc = "Show Neogit UI" }
     }
@@ -89,6 +92,24 @@ return {
       local wiki = require("configs.vimwiki")
       wiki.setup()
     end,
+  },
+  {
+  'nvim-orgmode/orgmode',
+  event = 'VeryLazy',
+  config = function()
+    require('orgmode').setup({
+      org_agenda_files = '~/orgfiles/**/*',
+      org_default_notes_file = '~/orgfiles/refile.org',
+      org_capture_templates = {
+        a = {
+          description = 'Appointment',
+          template = '* %?\n  %^T',
+          target = '~/orgfiles/schedule.org',
+        },
+      },
+    })
+   vim.lsp.enable('org')
+  end,
   },
   {
     'mrcjkb/rustaceanvim',
@@ -152,10 +173,7 @@ return {
     'brianhuster/live-preview.nvim',
     dependencies = {
         -- You can choose one of the following pickers
-        'nvim-telescope/telescope.nvim',
         'ibhagwan/fzf-lua',
-        'echasnovski/mini.pick',
-		'folke/snacks.nvim',
     },
     lazy = true,
   },
@@ -191,5 +209,21 @@ return {
       config = function()
           require("nvim-surround").setup()
       end
+  },
+
+  -- Telescope is replaced by fzf-lua. Disabling here overrides NvChad's own
+  -- spec; lazy silently prunes it from any `dependencies` list that names it.
+  -- Note: `:Lazy clean` will then offer to delete nvim-data/lazy/telescope.nvim.
+  -- Use `cond = false` instead if you'd rather keep the directory on disk.
+  { "nvim-telescope/telescope.nvim", enabled = false },
+
+  {
+    "ibhagwan/fzf-lua",
+    -- lua/configs/lazy.lua sets defaults.lazy = true, so a load trigger is
+    -- required; the cmd stub forwards args verbatim on first use.
+    cmd = "FzfLua",
+    opts = function()
+      return require "configs.fzflua"
+    end,
   },
 }

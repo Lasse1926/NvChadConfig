@@ -3,6 +3,42 @@ require "nvchad.mappings"
 
 local map = vim.keymap.set
 
+-- Fzf-lua: overrides the telescope maps set by `require "nvchad.mappings"`.
+-- Kept up here rather than at the bottom on purpose -- the top-level
+-- require("dap") further down would abort this file if dap ever failed to load,
+-- and that would leave NvChad's <cmd>Telescope ...<CR> maps dangling with E492.
+map("n", "<leader>ff", "<cmd>FzfLua files<CR>", { desc = "Find | Files" })
+map(
+  "n",
+  "<leader>fa",
+  "<cmd>FzfLua files follow=true no_ignore=true hidden=true<CR>",
+  { desc = "Find | All files" }
+)
+map("n", "<leader>fw", "<cmd>FzfLua live_grep<CR>", { desc = "Find | Live grep" })
+map("n", "<leader>fb", "<cmd>FzfLua buffers<CR>", { desc = "Find | Buffers" })
+map("n", "<leader>fh", "<cmd>FzfLua helptags<CR>", { desc = "Find | Help tags" })
+map("n", "<leader>fo", "<cmd>FzfLua oldfiles<CR>", { desc = "Find | Old files" })
+map("n", "<leader>fz", "<cmd>FzfLua blines<CR>", { desc = "Find | Lines in buffer" })
+map("n", "<leader>ma", "<cmd>FzfLua marks<CR>", { desc = "Find | Marks" })
+map("n", "<leader>cm", "<cmd>FzfLua git_commits<CR>", { desc = "Git | Commits" })
+map("n", "<leader>gt", "<cmd>FzfLua git_status<CR>", { desc = "Git | Status" })
+map("n", "<leader>pt", function()
+  require("configs.fzfterms").pick()
+end, { desc = "Find | Hidden terminals" })
+
+-- LSP pickers. Lowercase = current buffer, uppercase = whole project.
+map("n", "<leader>fs", "<cmd>FzfLua lsp_document_symbols<CR>", { desc = "Lsp | Symbols in file" })
+map("n", "<leader>fS", "<cmd>FzfLua lsp_live_workspace_symbols<CR>", { desc = "Lsp | Symbols in project" })
+map("n", "<leader>fr", "<cmd>FzfLua lsp_references<CR>", { desc = "Lsp | References" })
+map("n", "<leader>fR", "<cmd>FzfLua lsp_finder<CR>", { desc = "Lsp | Finder (refs/defs/impls)" })
+map("n", "<leader>fe", "<cmd>FzfLua lsp_document_diagnostics<CR>", { desc = "Lsp | Diagnostics in file" })
+map("n", "<leader>fE", "<cmd>FzfLua lsp_workspace_diagnostics<CR>", { desc = "Lsp | Diagnostics in project" })
+-- Parser-based, so this one still works with no language server attached.
+map("n", "<leader>ft", "<cmd>FzfLua treesitter<CR>", { desc = "Find | Treesitter symbols" })
+-- Deliberately not overridden:
+--   <leader>fm -> conform format file (never was telescope)
+--   <leader>th -> require("nvchad.themes").open() (volt picker, not telescope)
+
 map("n", ";", ":", { desc = "Cmd | Enter command mode" })
 map("i", "jk", "<ESC>", { desc = "Insert | Exit insert mode" })
 
@@ -23,7 +59,7 @@ map("x", "<leader>ca", vim.lsp.buf.code_action, vim.tbl_extend("force", opts, { 
 -- Registers <leader>ie (open file/folder in system default / Explorer)
 require "configs.nvimtree"
 
-map("n", "<leader>yp",
+map("n", "<leader>yr",
 function()
   local path = vim.fn.expand("%:.")
   vim.fn.setreg("+", path)
@@ -31,6 +67,14 @@ function()
 end,
 { desc = "File | Copy relative path", noremap = true, silent = true })
 
+map("n", "<leader>yp",
+function()
+  local path = vim.fn.expand("%:p")
+  vim.fn.setreg("+", path)
+  print("Copied: " .. path)
+end,
+
+{ desc = "File | Copy absolute path", noremap = true, silent = true })
 map("n","<leader>le",
 function()
   vim.opt_local.spell = not vim.opt_local.spell:get()
@@ -95,3 +139,18 @@ end,{ desc = "Git | Diffthis" })
 map({"n"},"<leader>gh",function ()
   require('gitsigns').preview_hunk_inline()
 end,{ desc = "Git | preview hunk inline" })
+
+-- Diff
+vim.api.nvim_create_user_command("DiffPick", function()
+  require("configs.filediff").pick_and_diff()
+end, { desc = "File | Diff against picked file" })
+
+map("n", "<leader>fd", "<cmd>DiffPick<CR>", { desc = "File | Diff against picked file" })
+
+map("n", "<C-c>", "<Nop>", { desc = "Disable Ctrl-C" })
+
+-- Orgmode
+map("n", "<leader>ow", "<cmd>e ~/orgfiles/work.org<CR>", { desc = "Org | Open work.org" })
+map("n", "<leader>op", "<cmd>e ~/orgfiles/personal.org<CR>", { desc = "Org | Open personal.org" })
+map("n", "<leader>oR", "<cmd>e ~/orgfiles/refile.org<CR>", { desc = "Org | Open refile.org (inbox)" })
+map("n", "<leader>os", "<cmd>e ~/orgfiles/schedule.org<CR>", { desc = "Org | Open schedule.org" })
