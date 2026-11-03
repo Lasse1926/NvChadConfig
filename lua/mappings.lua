@@ -154,3 +154,48 @@ map("n", "<leader>ow", "<cmd>e ~/orgfiles/work.org<CR>", { desc = "Org | Open wo
 map("n", "<leader>op", "<cmd>e ~/orgfiles/personal.org<CR>", { desc = "Org | Open personal.org" })
 map("n", "<leader>oR", "<cmd>e ~/orgfiles/refile.org<CR>", { desc = "Org | Open refile.org (inbox)" })
 map("n", "<leader>os", "<cmd>e ~/orgfiles/schedule.org<CR>", { desc = "Org | Open schedule.org" })
+map("n", "<leader>oS", function()
+  vim.cmd("e ~/orgfiles/ticketState.org")
+  local pattern = "^\\*\\+ " .. os.date("%Y-%m-%d")
+  if vim.fn.search(pattern, "w") == 0 then
+    vim.notify("No entry for today yet", vim.log.levels.INFO)
+    return
+  end
+  -- orgmode applies its startup folding after the buffer loads; unfold after it
+  vim.defer_fn(function()
+    vim.cmd("normal! zv")
+    pcall(vim.cmd, "normal! zO")
+    vim.cmd("normal! zt")
+  end, 50)
+end, { desc = "Org | Open ticketState.org at today" })
+
+-- Org text object: heading content only (no headline, stops at next heading)
+local function select_org_heading_content()
+  local cur = vim.fn.line(".")
+  local head = cur
+  while head > 0 and not vim.fn.getline(head):match("^%*+ ") do
+    head = head - 1
+  end
+  if head == 0 then return end
+
+  local last_line = vim.fn.line("$")
+  local stop = head + 1
+  while stop <= last_line and not vim.fn.getline(stop):match("^%*+ ") do
+    stop = stop + 1
+  end
+  stop = stop - 1
+  while stop > head and vim.fn.getline(stop):match("^%s*$") do
+    stop = stop - 1
+  end
+  if stop <= head then return end
+
+  vim.cmd("normal! " .. (head + 1) .. "GV" .. stop .. "G")
+end
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "org",
+  callback = function(args)
+    vim.keymap.set({ "x", "o" }, "ic", select_org_heading_content,
+      { buffer = args.buf, desc = "Org | Inner heading content" })
+  end,
+})

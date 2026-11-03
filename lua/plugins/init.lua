@@ -106,6 +106,12 @@ return {
           template = '* %?\n  %^T',
           target = '~/orgfiles/schedule.org',
         },
+        s = {
+          description = 'Ticket state',
+          template = '- %?',
+          target = '~/orgfiles/ticketState.org',
+          datetree = true,
+        },
       },
     })
    vim.lsp.enable('org')
