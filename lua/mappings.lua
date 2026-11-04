@@ -154,6 +154,7 @@ map("n", "<leader>ow", "<cmd>e ~/orgfiles/work.org<CR>", { desc = "Org | Open wo
 map("n", "<leader>op", "<cmd>e ~/orgfiles/personal.org<CR>", { desc = "Org | Open personal.org" })
 map("n", "<leader>oR", "<cmd>e ~/orgfiles/refile.org<CR>", { desc = "Org | Open refile.org (inbox)" })
 map("n", "<leader>os", "<cmd>e ~/orgfiles/schedule.org<CR>", { desc = "Org | Open schedule.org" })
+map("n", "<leader>ob", "<cmd>e ~/orgfiles/school.org<CR>", { desc = "Org | Open school.org" })
 map("n", "<leader>oS", function()
   vim.cmd("e ~/orgfiles/ticketState.org")
   local pattern = "^\\*\\+ " .. os.date("%Y-%m-%d")
