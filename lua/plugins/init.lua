@@ -101,10 +101,17 @@ return {
       org_agenda_files = '~/orgfiles/**/*',
       org_default_notes_file = '~/orgfiles/refile.org',
       org_capture_templates = {
+        t = {
+          description = 'Todo',
+          template = '* TODO %?\n  %u',
+          target = '~/orgfiles/refile.org',
+          headline = 'Todo',
+        },
         a = {
           description = 'Appointment',
           template = '* %?\n  %^T',
-          target = '~/orgfiles/schedule.org',
+          target = '~/orgfiles/refile.org',
+          headline = 'Schedule',
         },
         s = {
           description = 'Ticket state',
