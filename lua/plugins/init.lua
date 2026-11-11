@@ -1,5 +1,13 @@
 return {
   {
+    "DiaWolf",
+    dir = "~/Programming/nvim_plugins/DiaWolf.nvim",
+    ft = "plantuml",
+    opts = {
+        plantuml_jar = "C:/Users/mokel/.local/bin/plantuml.jar",
+    },
+  },
+  {
     "Lasse1926/nvim-flashcard-windows",
     cmd = "Flashcard",
     opts = {
@@ -29,10 +37,10 @@ return {
     config = function()
       require("configs.pandoc")
     end,
-    lazy = false,
+    ft = "plantuml",
   },
   {'sindrets/diffview.nvim',
-    lazy = false,
+    ft = "plantuml",
   },
   {
     "NeogitOrg/neogit",
@@ -50,10 +58,10 @@ return {
     }
   },
   {'prettier/vim-prettier',
-    lazy = false,
+    ft = "plantuml",
   },
   {'dhruvasagar/vim-table-mode',
-    lazy = false,
+    ft = "plantuml",
   },
   { 'nvim-mini/mini.nvim', version = '*' },
   {
@@ -159,15 +167,15 @@ return {
   },
   {
     "reedes/vim-pencil",
-    lazy = false,
+    ft = "plantuml",
   },
   {
     "junegunn/goyo.vim",
-    lazy = false,
+    ft = "plantuml",
   },
   {
     "junegunn/limelight.vim",
-    lazy = false,
+    ft = "plantuml",
   },
   {
     "windwp/nvim-ts-autotag",

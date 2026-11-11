@@ -43,4 +43,48 @@ M.toggle = function()
   vim.cmd "startinsert"
 end
 
+-- Returns the output lines of the last executed command in the REPL
+M.last_output = function()
+  if not (buf and vim.api.nvim_buf_is_valid(buf)) then
+    return nil
+  end
+  local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+  -- drop trailing empty terminal lines
+  while #lines > 0 and lines[#lines]:match "^%s*$" do
+    table.remove(lines)
+  end
+
+  -- find the last two prompts (">>> ")
+  local prompts = {}
+  for i = #lines, 1, -1 do
+    if lines[i]:match "^>>>" then
+      table.insert(prompts, i)
+      if #prompts == 2 then
+        break
+      end
+    end
+  end
+  if #prompts < 2 then
+    return nil
+  end
+  local stop, start = prompts[1], prompts[2] + 1
+  -- skip multi-line input continuation lines ("... ")
+  while start < stop and lines[start]:match "^%.%.%." do
+    start = start + 1
+  end
+  if start >= stop then
+    return nil
+  end
+  return vim.list_slice(lines, start, stop - 1)
+end
+
+M.paste_last_output = function()
+  local out = M.last_output()
+  if not out then
+    vim.notify("PyRepl: no output found", vim.log.levels.WARN)
+    return
+  end
+  vim.api.nvim_put(out, "l", true, true)
+end
+
 return M

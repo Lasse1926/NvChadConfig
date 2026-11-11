@@ -130,6 +130,9 @@ vim.api.nvim_create_user_command("PyRepl", function()
 end, { desc = "Python | Toggle REPL" })
 
 map({ "n", "t" }, "<A-p>", "<cmd>PyRepl<CR>", { desc = "Python | Toggle REPL" })
+map("n", "<A-P>", function()
+  require("configs.pyrepl").paste_last_output()
+end, { desc = "Python | Paste last REPL output" })
 
 -- Gitsigns
 map({"n"},"<leader>gd",function ()
