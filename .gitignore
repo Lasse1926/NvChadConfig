@@ -1,2 +1,3 @@
 lazy-lock.json
 lua/configs/local.lua
+lua/plugins/dev.lua

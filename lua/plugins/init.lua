@@ -115,6 +115,12 @@ return {
           target = '~/orgfiles/refile.org',
           headline = 'Todo',
         },
+        d = {
+          description = 'Daily',
+          template = '* TODO %?\n  SCHEDULED: %t \n  %u',
+          target = '~/orgfiles/refile.org',
+          headline = 'Daily',
+        },
         a = {
           description = 'Appointment',
           template = '* %?\n  %^T',
