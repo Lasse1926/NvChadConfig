@@ -37,10 +37,8 @@ return {
     config = function()
       require("configs.pandoc")
     end,
-    ft = "plantuml",
   },
   {'sindrets/diffview.nvim',
-    ft = "plantuml",
   },
   {
     "NeogitOrg/neogit",
@@ -58,10 +56,8 @@ return {
     }
   },
   {'prettier/vim-prettier',
-    ft = "plantuml",
   },
   {'dhruvasagar/vim-table-mode',
-    ft = "plantuml",
   },
   { 'nvim-mini/mini.nvim', version = '*' },
   {
@@ -174,15 +170,12 @@ return {
   },
   {
     "reedes/vim-pencil",
-    ft = "plantuml",
   },
   {
     "junegunn/goyo.vim",
-    ft = "plantuml",
   },
   {
     "junegunn/limelight.vim",
-    ft = "plantuml",
   },
   {
     "windwp/nvim-ts-autotag",
