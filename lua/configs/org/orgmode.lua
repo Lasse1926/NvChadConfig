@@ -152,6 +152,7 @@ function M.setup()
   setup_next_warning()
   setup_next_agenda_parent()
   require("configs.org.todo_deps").setup()
+  require("configs.org.visuals").setup()
 
   vim.lsp.enable "org"
 end
