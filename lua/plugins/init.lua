@@ -98,42 +98,12 @@ return {
     end,
   },
   {
-  'nvim-orgmode/orgmode',
-  event = 'VeryLazy',
-  config = function()
-    require('orgmode').setup({
-      org_agenda_files = '~/orgfiles/**/*',
-      org_default_notes_file = '~/orgfiles/refile.org',
-      org_todo_keywords = { 'TODO', 'NEXT', '|', 'DONE', 'CANCELLED' },
-      org_capture_templates = {
-        t = {
-          description = 'Todo',
-          template = '* TODO %?\n  %u',
-          target = '~/orgfiles/refile.org',
-          headline = 'Todo',
-        },
-        d = {
-          description = 'Daily',
-          template = '* TODO %?\n  SCHEDULED: %t \n  %u',
-          target = '~/orgfiles/refile.org',
-          headline = 'Daily',
-        },
-        a = {
-          description = 'Appointment',
-          template = '* %?\n  %^T',
-          target = '~/orgfiles/refile.org',
-          headline = 'Schedule',
-        },
-        s = {
-          description = 'Ticket state',
-          template = '- %?',
-          target = '~/orgfiles/ticketState.org',
-          datetree = true,
-        },
-      },
-    })
-   vim.lsp.enable('org')
-  end,
+    'nvim-orgmode/orgmode',
+    event = 'VeryLazy',
+    -- config: lua/configs/org/orgmode.lua, capture templates: lua/configs/org/capture.lua
+    config = function()
+      require('configs.org.orgmode').setup()
+    end,
   },
   {
     'mrcjkb/rustaceanvim',
