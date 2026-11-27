@@ -30,22 +30,11 @@ local function setup_buffer_keymaps()
   vim.api.nvim_create_autocmd("FileType", {
     pattern = "org",
     callback = function(ev)
-      -- <leader>oxp: set a property on the heading under the cursor.
-      -- Creates the :PROPERTIES: drawer if missing; empty value removes the property.
+      -- <leader>oxp: checklist picker for the heading's properties
+      -- (lua/configs/org/property_picker.lua).
       vim.keymap.set("n", "<leader>oxp", function()
-        vim.ui.input({ prompt = "Property: " }, function(name)
-          if not name or vim.trim(name) == "" then
-            return
-          end
-          vim.ui.input({ prompt = name .. " value (empty = remove): " }, function(value)
-            if value == nil then
-              return
-            end
-            local headline = require("orgmode.api").current():get_closest_headline()
-            headline:set_property(vim.trim(name):upper(), value ~= "" and value or nil)
-          end)
-        end)
-      end, { buffer = ev.buf, desc = "org set property" })
+        require("configs.org.property_picker").open()
+      end, { buffer = ev.buf, desc = "org edit properties" })
 
       -- Visual > / <: demote / promote every heading in the selection by one level
       -- (uses orgmode's own >> / << so body indentation is adjusted too).
@@ -162,6 +151,7 @@ function M.setup()
   setup_buffer_keymaps()
   setup_next_warning()
   setup_next_agenda_parent()
+  require("configs.org.todo_deps").setup()
 
   vim.lsp.enable "org"
 end
