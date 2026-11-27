@@ -23,6 +23,7 @@ local FALLBACK = {
 -- How much of the heading color is mixed into the background (0..1).
 local BAR_MIX = 0.15 -- open heading bar
 local FOLD_MIX = 0.25 -- folded heading bar
+local AGENDA_CURSOR_MIX = 0.20 -- agenda cursor line (level-1 color)
 
 local ns = vim.api.nvim_create_namespace "org_visuals"
 
@@ -57,16 +58,54 @@ local function mix(a, b, amount)
   return string.format("#%02x%02x%02x", c(r1, r2), c(g1, g2), c(b1, b2))
 end
 
+-- Folded-bar bg per level, and cache of combined "<source fg> on folded bar"
+-- groups (built lazily in foldtext, since orgmode defines its keyword/tag
+-- groups after we run). Both reset whenever highlights are recomputed.
+local fold_bgs = {}
+local fold_part_groups = {}
+
 local function set_highlights()
   local p = palette()
   local normal_bg = vim.api.nvim_get_hl(0, { name = "Normal", link = false }).bg
   local base = normal_bg and string.format("#%06x", normal_bg) or p.black
   for n = 1, 8 do
     local color = p[LEVEL_COLORS[math.min(n, #LEVEL_COLORS)]]
+    fold_bgs[n] = mix(color, base, FOLD_MIX)
     vim.api.nvim_set_hl(0, "@org.headline.level" .. n, { fg = color, bold = true })
     vim.api.nvim_set_hl(0, "OrgHeadingBg" .. n, { bg = mix(color, base, BAR_MIX) })
-    vim.api.nvim_set_hl(0, "OrgHeadingFold" .. n, { fg = color, bg = mix(color, base, FOLD_MIX), bold = true })
+    vim.api.nvim_set_hl(0, "OrgHeadingFold" .. n, { fg = color, bg = fold_bgs[n], bold = true })
   end
+  fold_part_groups = {}
+
+  -- Agenda cursor line: stronger than the theme's CursorLine so the row is
+  -- easy to follow from title to right-aligned tags.
+  vim.api.nvim_set_hl(0, "OrgAgendaCursorLine", { bg = mix(p[LEVEL_COLORS[1]], base, AGENDA_CURSOR_MIX) })
+end
+
+-- Highlight group with `source`'s foreground on level `level`'s folded bar.
+local function fold_part(source, level)
+  local name = "OrgFold_" .. source:gsub("[^%w]", "_") .. "_" .. level
+  if not fold_part_groups[name] then
+    local src = vim.api.nvim_get_hl(0, { name = source, link = false })
+    vim.api.nvim_set_hl(0, name, { fg = src.fg, bg = fold_bgs[level], bold = src.bold })
+    fold_part_groups[name] = true
+  end
+  return name
+end
+
+-- TODO keywords from the orgmode config: { TODO = "todo", DONE = "done", ... }
+local function keyword_types()
+  local ok, config = pcall(require, "orgmode.config")
+  local list = ok and config.org_todo_keywords or { "TODO", "|", "DONE" }
+  local types, kind = {}, "todo"
+  for _, kw in ipairs(list) do
+    if kw == "|" then
+      kind = "done"
+    else
+      types[(kw:gsub("%(.*%)$", ""))] = kind -- strip fast-access key, e.g. "TODO(t)"
+    end
+  end
+  return types
 end
 
 -- ------------------------------------------------------------------ folds ---
@@ -94,23 +133,72 @@ end
 function M.foldtext()
   local start, finish = vim.v.foldstart, vim.v.foldend
   local line = vim.fn.getline(start)
-  local hl = "OrgHeadingFold" .. math.min(heading_level(line) or 1, 8)
-  local text = line .. "  … " .. (finish - start) .. " lines"
+  local level = math.min(heading_level(line) or 1, 8)
+  local hl = "OrgHeadingFold" .. level
+  local chunks = {}
+  local function add(text, group)
+    if text ~= "" then
+      table.insert(chunks, { text, group })
+    end
+  end
+
+  -- "** TODO Title   :tag1:tag2:" -> stars | keyword | title | tags
+  local stars, rest = line:match "^(%*+%s*)(.*)$"
+  if not stars then
+    stars, rest = "", line
+  end
+  add(stars, hl)
+  local kw, after = rest:match "^(%u+)(%s.*)$"
+  if not kw then
+    kw, after = rest:match "^(%u+)$", ""
+  end
+  local kind = kw and keyword_types()[kw]
+  if kind then
+    add(kw, fold_part("@org.keyword." .. kind, level))
+    rest = after
+  end
+  local title, gap, tags = rest:match "^(.-)(%s+)(:[%w_@#%%:]+:)%s*$"
+  if tags then
+    add(title .. gap, hl)
+    add(tags, fold_part("@org.tag", level))
+  else
+    add(rest, hl)
+  end
+  local hidden = finish - start
+  add("  … " .. hidden .. (hidden == 1 and " line" or " lines"), hl)
+
+  local used = 0
+  for _, c in ipairs(chunks) do
+    used = used + vim.fn.strdisplaywidth(c[1])
+  end
   local info = vim.fn.getwininfo(vim.api.nvim_get_current_win())[1]
   local width = vim.api.nvim_win_get_width(0) - (info and info.textoff or 0)
-  local pad = math.max(0, width - vim.fn.strdisplaywidth(text))
-  return { { text .. string.rep(" ", pad), hl } }
+  add(string.rep(" ", math.max(0, width - used)), hl)
+  return chunks
 end
 
 -- ------------------------------------------------------------------ setup ---
 
 function M.setup()
   set_highlights()
+  local group = vim.api.nvim_create_augroup("org_visuals", { clear = true })
   vim.api.nvim_create_autocmd("ColorScheme", {
-    group = vim.api.nvim_create_augroup("org_visuals", { clear = true }),
+    group = group,
     callback = function()
       -- render-markdown redefines its groups on ColorScheme too; run after it.
       vim.schedule(set_highlights)
+    end,
+  })
+
+  -- Agenda: highlight the cursor row across the full width.
+  vim.api.nvim_create_autocmd("FileType", {
+    group = group,
+    pattern = "orgagenda",
+    callback = function()
+      vim.wo.cursorline = true
+      -- NvChad sets cursorlineopt=number globally (only the number is lit).
+      vim.wo.cursorlineopt = "both"
+      vim.wo.winhighlight = "CursorLine:OrgAgendaCursorLine"
     end,
   })
 
