@@ -20,6 +20,12 @@ return {
     target = "~/orgfiles/refile.org",
     headline = "Schedule",
   },
+  p = {
+    description = "Promt",
+    template = "* %?\n",
+    target = "~/orgfiles/refile.org",
+    headline = "Promt",
+  },
   s = {
     description = "Ticket state",
     template = "- %?",
